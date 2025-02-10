@@ -8,5 +8,10 @@ class Chat(models.Model):
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_as_recipient')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['sender', 'recipient'], name='unique_chat_between_users')
+        ]
+
     def __str__(self):
         return f"Chat between {self.sender.email} and {self.recipient.email}"
