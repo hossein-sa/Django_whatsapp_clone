@@ -1,7 +1,6 @@
 from rest_framework import generics
-from rest_framework.exceptions import PermissionDenied
+from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
 
 from chats.models import Chat
 from .models import Message
@@ -14,14 +13,21 @@ class MessageCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        chat = serializer.validated_data['chat']
-        sender = self.request.user
+        chat_id = self.request.data.get("chat")  # Get chat ID from request body
+        sender = self.request.user  # Auto-assign sender
+
+        # Ensure chat exists
+        try:
+            chat = Chat.objects.get(id=chat_id)
+        except Chat.DoesNotExist:
+            raise NotFound({"error": "Chat does not exist."})
 
         # Ensure the sender is part of the chat
         if sender not in [chat.sender, chat.recipient]:
-            raise PermissionDenied("You are not a participant of this chat.")
+            raise PermissionDenied({"error": "You are not a participant of this chat."})
 
-        serializer.save(sender=sender)
+        # Auto-assign sender before saving
+        serializer.save(chat=chat, sender=sender)
 
 
 # ✅ Get all messages from a chat
