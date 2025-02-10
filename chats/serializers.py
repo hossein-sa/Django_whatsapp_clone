@@ -1,7 +1,5 @@
 from rest_framework import serializers
-
 from .models import Chat
-
 
 class ChatSerializer(serializers.ModelSerializer):
     sender_name = serializers.CharField(source='sender.email', read_only=True)
@@ -9,4 +7,4 @@ class ChatSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Chat
-        fields = ['id', 'sender', 'recipient', 'created_at', 'sender_name', 'recipient_name']
+        fields = ['id', 'recipient', 'created_at', 'sender_name', 'recipient_name']  # 👈 Removed 'sender'
