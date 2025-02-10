@@ -51,8 +51,11 @@ INSTALLED_APPS = [
     # Projects apps
     'users',
     'chats',
-    'messages',
+    'chat_messages',
 ]
+
+AUTH_USER_MODEL = 'users.User'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
