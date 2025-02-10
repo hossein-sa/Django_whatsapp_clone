@@ -1,0 +1,29 @@
+# Byte-compiled / compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env
+
+# Django and database files
+db.sqlite3
+*.log
+
+# Docker
+*.pid
+postgres_data/
+
+# PyCharm and JetBrains IDE settings
+.idea/
+*.iml
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+
+# Media and static files
+/media/
+/staticfiles/
