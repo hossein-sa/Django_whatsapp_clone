@@ -1,6 +1,7 @@
 from rest_framework import serializers
+
 from .models import Chat
-from users.models import User
+
 
 class ChatSerializer(serializers.ModelSerializer):
     sender_name = serializers.CharField(source='sender.email', read_only=True)
