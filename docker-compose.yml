@@ -15,24 +15,27 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - whatsapp_network
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   django:
     build: .
     container_name: whatsapp-backend
-    command: >
-      sh -c "sleep 10 && python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+    command: ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
     volumes:
       - .:/app
     ports:
       - "8000:8000"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
     networks:
       - whatsapp_network
-
 
 volumes:
   postgres_data:
