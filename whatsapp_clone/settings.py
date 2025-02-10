@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 import environ
+from datetime import timedelta
 
 
 # Load environment variables
@@ -47,6 +48,7 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'rest_framework',
+    'rest_framework_simplejwt',
 
     # Projects apps
     'users',
@@ -55,14 +57,21 @@ INSTALLED_APPS = [
 ]
 
 
+# Django REST Framework Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+}
+
+# Simple JWT Settings
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),  # Token expires in 1 day
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7), # Refresh token lasts 7 days
+    'AUTH_HEADER_TYPES': ('Bearer',),           # Use "Bearer Token" in requests
 }
 
 AUTH_USER_MODEL = 'users.User'
