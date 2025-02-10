@@ -4,8 +4,8 @@ import uuid
 
 class Chat(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    sender = models.ForeignKey(User, related_name="chats_as_sender", on_delete=models.CASCADE)
-    recipient = models.ForeignKey(User, related_name="chats_as_recipient", on_delete=models.CASCADE)
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_as_sender')
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='chats_as_recipient')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
